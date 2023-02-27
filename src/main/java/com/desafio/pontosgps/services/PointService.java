@@ -1,5 +1,7 @@
 package com.desafio.pontosgps.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +22,9 @@ public class PointService {
 	
 	public Point fromDTO(PointDTO dto) {
 		return new Point(null, dto.getName(), dto.getX(), dto.getY());
+	}
+	
+	public List<Point> findAll() {
+		return repository.findAll();
 	}
 }
