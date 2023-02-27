@@ -21,7 +21,7 @@ public class PointResource {
 	private PointService service;
 	
 	@PostMapping
-	public ResponseEntity<PointDTO> insert(@RequestBody PointDTO dto) {
+	public ResponseEntity<Void> insert(@RequestBody PointDTO dto) {
 		Point obj = service.fromDTO(dto);
 		obj = service.save(obj);
 		
