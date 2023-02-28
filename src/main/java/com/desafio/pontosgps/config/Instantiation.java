@@ -12,8 +12,12 @@ public class Instantiation implements CommandLineRunner {
 
 	@Autowired
 	private PointRepository pointRepository;
+	
+
 	@Override
 	public void run(String... args) throws Exception {
+		pointRepository.deleteAll();
+		
 		pointRepository.save(new Point(null, "Lanchonete", 27, 12));
 		pointRepository.save(new Point(null, "Posto", 31, 18));
 		pointRepository.save(new Point(null, "Joalheria", 15, 12));
