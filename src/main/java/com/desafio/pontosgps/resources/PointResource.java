@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,10 +27,7 @@ public class PointResource {
 	
 	@GetMapping
 	public ResponseEntity<List<PointDTO>> findAll() {
-		List<PointDTO> resp = service.findAll()
-				.stream()
-				.map(p -> new PointDTO(p))
-				.collect(Collectors.toList());
+		List<PointDTO> resp = listToDTO(service.findAll());
 		
 		return ResponseEntity.ok().body(resp);
 	}
@@ -39,9 +37,22 @@ public class PointResource {
 		Point obj = service.fromDTO(dto);
 		obj = service.save(obj);
 		
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		
-		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(obj.getId()).toUri();
+
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@GetMapping(value="/near")
+	public ResponseEntity<List<PointDTO>> pointsNear(@RequestParam(value="x") int x,
+			@RequestParam(value="y") int y, @RequestParam(value="dmax") int dmax) {
+
+		List<PointDTO> resp = listToDTO(service.pointsNear(x, y, dmax));
+		
+		return ResponseEntity.ok().body(resp);
+	}
+	
+	private List<PointDTO> listToDTO(List<Point> list) {
+		return list.stream().map(p -> new PointDTO(p)).collect(Collectors.toList());
 	}
 }
