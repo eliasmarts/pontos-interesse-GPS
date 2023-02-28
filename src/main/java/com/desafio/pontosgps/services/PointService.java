@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.desafio.pontosgps.dto.PointDTO;
 import com.desafio.pontosgps.entities.Point;
 import com.desafio.pontosgps.repositories.PointRepository;
+import com.desafio.pontosgps.services.exceptions.IllegalValueException;
 
 @Service
 public class PointService {
@@ -30,6 +31,10 @@ public class PointService {
 	}
 	
 	public List<Point> pointsNear(int x, int y, int dmax) {
+		if (dmax < 0) {
+			throw new IllegalValueException("Distance must be positive");
+		}
+		
 		int dmaxsquared = dmax * dmax;
 		List<Point> possiblePoints = repository.pointsInsideRectangle(x - dmax, y - dmax, x + dmax, y + dmax);
 		
