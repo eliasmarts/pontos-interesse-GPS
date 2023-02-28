@@ -2,6 +2,11 @@
 
 Solução do desafio [pontos de interesse por GPS](https://github.com/backend-br/desafios/tree/master/03-Hard/PontosDeInteressePorGPS) da backend-br
 
+## Stack
+- Java
+- Spring boot
+- MySQL ou H2 database
+
 ## Problema
 A XY Inc. é uma empresa especializada na produção de excelentes receptores GPS (Global Positioning System).
 A diretoria está empenhada em lançar um dispositivo inovador que promete auxiliar pessoas na localização de pontos de interesse (POIs), e precisa muito de sua ajuda.
@@ -36,8 +41,60 @@ Dado o ponto de referência (x=20, y=10) indicado pelo receptor GPS, e uma dist�
 
 ### Cadastrar POI
 Para cadastrar um ponto de interesse
-*[POST]* localhost:8080/points
+**[POST]|** localhost:8080/points
 No body da requisição
 Campo | Tipo | Descrição | Obrigatório
 ------|------|-----------|------------
-name  
+name  |String|Nome do POI| Sim
+x | int | Coordenada x do POI, não negativo | Sim
+y | int | Coordenada y do POI, não negativo | Sim
+
+#### Exemplo
+#### Requisição
+**[POST]** localhost:8080/points
+```
+ {
+    "name": "Escola",
+    "x": 2,
+    "y": 4
+}
+```
+#### Resposta
+201 Created
+
+
+### Listar todos os POI
+#### Requisição
+**[GET]** localhost:8080/points
+#### Resposta
+200 OK
+```
+ {
+    "name": "Escola",
+    "x": 2,
+    "y": 4
+}
+```
+
+### Listar POI por proximidade
+**[GET]** localhost:8080/points/near
+
+#### Parâmetros
+Parâmetro | Tipo | Descrição | Obrigatório
+------|------|-----------|------------
+x | int | Coordenada x do ponto de referência | Sim
+y | int | Coordenada y do ponto de referência | Sim
+dmax | int | Distância máxima até o POI, não negativo | Sim
+
+#### Exemplo
+#### Requisição
+**[GET]** localhost:8080/points/near?x=5&y=5&dmax=10
+#### Resposta
+200 OK
+```
+ {
+    "name": "Escola",
+    "x": 2,
+    "y": 4
+}
+```
