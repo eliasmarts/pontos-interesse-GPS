@@ -23,6 +23,10 @@ public class PointService {
 	}
 	
 	public Point fromDTO(PointDTO dto) {
+		if (dto.getX() < 0 || dto.getY() < 0) {
+			throw new IllegalValueException("Point coordinate must be positive.");
+		}
+		
 		return new Point(null, dto.getName(), dto.getX(), dto.getY());
 	}
 	
